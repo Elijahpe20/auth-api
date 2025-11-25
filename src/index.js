@@ -18,6 +18,16 @@ app.get('/', (req, res) => {
 
 app.use('/users', userRoutes);
 
+// Endpoint temporal para sincronizar base de datos (SOLO PARA DESARROLLO)
+app.get('/sync-database', async (req, res) => {
+	try {
+		await sequelize.sync({ force: false });
+		res.json({ message: 'Tablas sincronizadas correctamente' });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+});
+
 // Iniciar servidor
 sequelize
 	.authenticate()
